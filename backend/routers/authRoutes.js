@@ -1,3 +1,4 @@
+const protect = require('../middleware/authMiddleware');
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
@@ -61,6 +62,11 @@ router.post('/login', async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
   }
+});  
+
+
+router.get('/profile', protect, (req, res) => {
+  res.status(200).json({ message: 'You are authorized!', userId: req.user.userId });
 });
 
 module.exports = router;

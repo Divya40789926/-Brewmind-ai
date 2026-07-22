@@ -1,8 +1,28 @@
+const mongoose = require('mongoose');
+require('dotenv').config();
+const Product = require('./models/Product');
+
 const products = [
-  { id: 1, name: "Caramel Latte", price: 180, image: "https://placehold.co/300x300?text=Caramel+Latte" },
-  { id: 2, name: "Cappuccino", price: 160, image: "https://placehold.co/300x300?text=Cappuccino" },
-  { id: 3, name: "Cold Brew", price: 190, image: "https://placehold.co/300x300?text=Cold+Brew" },
-  { id: 4, name: "Espresso", price: 120, image: "https://placehold.co/300x300?text=Espresso" },
+  { name: "Caramel Latte", price: 180, image: "https://placehold.co/300x300?text=Caramel+Latte", category: "hot" },
+  { name: "Cappuccino", price: 160, image: "https://placehold.co/300x300?text=Cappuccino", category: "hot" },
+  { name: "Cold Brew", price: 190, image: "https://placehold.co/300x300?text=Cold+Brew", category: "cold" },
+  { name: "Espresso", price: 120, image: "https://placehold.co/300x300?text=Espresso", category: "hot" },
 ];
 
-export default products;
+async function seedDB() {
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log('MongoDB connected for seeding');
+
+    await Product.deleteMany({}); // clear existing products first
+    await Product.insertMany(products);
+
+    console.log('Products seeded successfully!');
+    process.exit(0);
+  } catch (err) {
+    console.error('Seeding error:', err);
+    process.exit(1);
+  }
+}
+
+seedDB();

@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import API from '../api/axios';
+import { motion } from 'framer-motion';
 
 function Chatbot() {
   const [messages, setMessages] = useState([
@@ -40,18 +41,22 @@ function Chatbot() {
       <h2 className="text-xl font-bold mb-4">AI Barista Chat</h2>
 
       <div className="flex-1 overflow-y-auto flex flex-col gap-3 mb-4 pr-1">
-        {messages.map((msg, i) => (
-          <div
-            key={i}
-            className={`max-w-[80%] p-3 rounded-lg ${
-              msg.role === 'user'
-                ? 'bg-amber-400 text-black self-end'
-                : 'bg-gray-800 text-white self-start'
-            }`}
-          >
-            {msg.text}
-          </div>
-        ))}
+        
+      {messages.map((msg, i) => (
+  <motion.div
+    key={i}
+    initial={{ opacity: 0, y: 10 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.3 }}
+    className={`max-w-[80%] p-3 rounded-lg ${
+      msg.role === 'user'
+        ? 'bg-amber-400 text-black self-end'
+        : 'bg-gray-800 text-white self-start'
+    }`}
+  >
+    {msg.text}
+  </motion.div>
+))}
 
         {loading && (
           <div className="bg-gray-800 text-gray-400 self-start p-3 rounded-lg italic">
